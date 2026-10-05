@@ -1,0 +1,6 @@
+{
+  "name": "SciQuest P6 - Primary 6 Science Lab & Arena",
+  "description": "Interactive 3D virtual science labs, Earth Science & Moon Phases, Augmented Reality (AR) holographic viewer, and gamified quizzes aligned with Cambridge Primary Science & My Pals Are Here.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
