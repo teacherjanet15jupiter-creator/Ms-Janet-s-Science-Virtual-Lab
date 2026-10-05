@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import {
   BookOpen, Award, Sparkles, CheckCircle2, ChevronRight, Zap, Leaf, Move, Trees, Cpu,
-  Activity, Play, Search, HelpCircle, Layers, CheckSquare, Square, Download, Share2, Moon
+  Activity, Play, Search, HelpCircle, Layers, CheckSquare, Square, Download, Share2, Moon,
+  FileText
 } from 'lucide-react';
 import { CURRICULUM_MODULES } from '../../data/curriculumData';
 import { ScienceTopic } from '../../types/science';
 import { soundEffects } from '../../utils/sound';
+import { BbsSowViewer } from './BbsSowViewer';
 
 interface Props {
   onNavigateToLab: (labId: 'energy' | 'plant' | 'forces' | 'ecosystem' | 'circuit' | 'moon') => void;
@@ -13,14 +15,14 @@ interface Props {
   onNavigateToDetective: (mysteryId?: string) => void;
 }
 
-type HubTab = 'overview' | 'cambridge' | 'mypals' | 'lesson5e' | 'checklist';
+type HubTab = 'bbs_sow' | 'overview' | 'cambridge' | 'mypals' | 'lesson5e' | 'checklist';
 
 export const CurriculumIntegrationHub: React.FC<Props> = ({
   onNavigateToLab,
   onNavigateToQuiz,
   onNavigateToDetective,
 }) => {
-  const [activeTab, setActiveTab] = useState<HubTab>('overview');
+  const [activeTab, setActiveTab] = useState<HubTab>('bbs_sow');
   const [selectedTopic, setSelectedTopic] = useState<ScienceTopic | 'all'>('all');
   const [completedCompetencies, setCompletedCompetencies] = useState<string[]>(() => {
     const saved = localStorage.getItem('sciquest_completed_competencies');
@@ -116,6 +118,7 @@ export const CurriculumIntegrationHub: React.FC<Props> = ({
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-indigo-100 pb-3">
         <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
           {[
+            { id: 'bbs_sow', label: 'BBS Science SOW (2025–2028)', icon: FileText, highlight: true },
             { id: 'overview', label: 'Interactive Syllabus Matrix', icon: Layers },
             { id: 'cambridge', label: 'Cambridge Stage 6 View', icon: Award },
             { id: 'mypals', label: 'My Pals P6 Chapter View', icon: BookOpen },
@@ -134,10 +137,12 @@ export const CurriculumIntegrationHub: React.FC<Props> = ({
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
                   isSelected
                     ? 'bg-indigo-600 text-white shadow-xs'
+                    : tab.highlight
+                    ? 'bg-rose-50 text-rose-900 border border-rose-200 hover:bg-rose-100'
                     : 'bg-white/80 hover:bg-white text-slate-700 border border-slate-200/70'
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : 'text-slate-400'}`} />
+                <Icon className={`w-3.5 h-3.5 ${isSelected ? 'text-white' : tab.highlight ? 'text-rose-600' : 'text-slate-400'}`} />
                 <span>{tab.label}</span>
               </button>
             );
@@ -145,7 +150,7 @@ export const CurriculumIntegrationHub: React.FC<Props> = ({
         </div>
 
         {/* Topic filter for views that support it */}
-        {activeTab !== 'checklist' && (
+        {activeTab !== 'checklist' && activeTab !== 'bbs_sow' && (
           <div className="flex items-center gap-1.5 overflow-x-auto text-xs">
             <span className="text-slate-400 text-[11px] font-medium mr-1 hidden sm:inline">Filter:</span>
             <button
@@ -174,6 +179,14 @@ export const CurriculumIntegrationHub: React.FC<Props> = ({
           </div>
         )}
       </div>
+
+      {/* TAB 0: Official BBS SOW (2025–2028) */}
+      {activeTab === 'bbs_sow' && (
+        <BbsSowViewer
+          onNavigateToLab={onNavigateToLab}
+          onNavigateToQuiz={onNavigateToQuiz}
+        />
+      )}
 
       {/* TAB 1: Dual Interactive Syllabus Matrix */}
       {activeTab === 'overview' && (
