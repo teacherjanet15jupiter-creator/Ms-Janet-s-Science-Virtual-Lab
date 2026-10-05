@@ -5,6 +5,7 @@ import { soundEffects } from '../../utils/sound';
 interface NoteItem {
   id: string;
   topic: string;
+  gradeLevel?: 'Primary 5' | 'Primary 6';
   cambridgeCode: string;
   myPalsRef: string;
   title: string;
@@ -16,12 +17,68 @@ interface NoteItem {
 }
 
 const NOTES_DATA: NoteItem[] = [
+  // Primary 5 Science Core Concepts
+  {
+    id: 'n_p5_reproduction_plants',
+    topic: 'Reproduction',
+    gradeLevel: 'Primary 5',
+    cambridgeCode: '5Bs.02',
+    myPalsRef: 'My Pals 5B Theme: Cycles (Unit 2: Reproduction in Plants, pp. 28–49)',
+    title: 'P5: Pollination vs Fertilisation & Seed Dispersal',
+    p6Rule: 'Pollination is the physical transfer of pollen from anther to stigma. Fertilisation is the fusion of male and female sex cells inside the ovule to produce seeds.',
+    formulaOrKeyword: 'Stamen (Anther + Filament) = Male | Pistil/Carpel (Stigma + Style + Ovary + Ovule) = Female',
+    commonMistake: 'Writing that fertilisation happens on the stigma or confusing seed dispersal with pollination.',
+    modelAnswerExample: '"Pollination occurs when pollen grains are transferred from anther to stigma. Fertilisation occurs when the male reproductive cell travels down the pollen tube and fuses with the egg cell inside the ovule."',
+    twsTip: 'Dispersal adaptations: Wind (feathery parachutes/wings), Animals (hooks/fleshy fruits), Water (fibrous waterproof husks), Explosive action (drying pods splitting open).'
+  },
+  {
+    id: 'n_p5_water_states',
+    topic: 'Water Cycle',
+    gradeLevel: 'Primary 5',
+    cambridgeCode: '5Es.01',
+    myPalsRef: 'My Pals 5B Theme: Cycles (Unit 1: Water and Changes of State, pp. 2–27)',
+    title: 'P5: Water Changes of State & Rate of Evaporation',
+    p6Rule: 'Evaporation is liquid water absorbing heat to become water vapour at ANY temperature below boiling. Condensation is water vapour losing heat to become liquid droplets.',
+    formulaOrKeyword: 'Factors increasing evaporation: Higher temperature, larger exposed surface area, wind presence, lower humidity.',
+    commonMistake: 'Claiming that liquid leaked through cold glass, or that cold air turned directly into water.',
+    modelAnswerExample: '"Warmer water vapour in the surrounding air comes into contact with the cooler surface of the container, loses heat to the cool surface, and condenses into liquid water droplets."',
+    twsTip: 'Experimental control: When testing the effect of surface area on evaporation, keep starting water volume, liquid temperature, and wind exposure constant.'
+  },
+  {
+    id: 'n_p5_circulatory',
+    topic: 'Circulatory System',
+    gradeLevel: 'Primary 5',
+    cambridgeCode: '5Bs.01',
+    myPalsRef: 'My Pals 5A Theme: Systems (Unit 2: The Human Circulatory System, pp. 19–37)',
+    title: 'P5: Human Circulatory System & Exercise Response',
+    p6Rule: 'The heart is a muscular pump. Oxygen-rich blood from lungs goes to heart then body; oxygen-poor blood returns from body to heart then lungs.',
+    formulaOrKeyword: 'Heart + Blood Vessels (Arteries, Veins, Capillaries) + Blood (RBC, WBC, Platelets, Plasma)',
+    commonMistake: 'Saying the heart pumps air or that arteries carry pure oxygen bubbles.',
+    modelAnswerExample: '"During exercise, muscle cells respire faster and need more energy. The heart beats faster to pump more oxygen and digested food to muscle cells, and to carry away carbon dioxide faster."',
+    twsTip: 'Pulse measurement: Measure resting heart rate for 1 minute before exercise, immediately after, and at 2-minute intervals until recovery to baseline.'
+  },
+  {
+    id: 'n_p5_cells',
+    topic: 'Cell System',
+    gradeLevel: 'Primary 5',
+    cambridgeCode: '5Bs.03',
+    myPalsRef: 'My Pals 5A Theme: Systems (Unit 3: The Cell System, pp. 38–58)',
+    title: 'P5: Cell as the Basic Unit of Life (Plant vs Animal)',
+    p6Rule: 'All living things are made of cells. Plant cells have a rigid cellulose cell wall and chloroplasts; animal cells have neither.',
+    formulaOrKeyword: 'Plant Only: Cell Wall, Chloroplasts, Large Central Vacuole. Both: Cell Membrane, Cytoplasm, Nucleus.',
+    commonMistake: 'Saying all plant cells have chloroplasts. Root cells and onion bulb cells do NOT have chloroplasts because they grow in the dark underground.',
+    modelAnswerExample: '"Under a microscope, the Elodea plant cell has a regular rectangular cell wall and green chloroplasts, while the cheek animal cell has an irregular flexible shape and lacks both cell wall and chloroplasts."',
+    twsTip: 'Staining cells: Methylene blue stains cheek cell nuclei; Iodine solution stains plant cell walls and starch granules.'
+  },
+
+  // Primary 6 Science Core Concepts
   {
     id: 'n_energy_1',
     topic: 'Energy',
+    gradeLevel: 'Primary 6',
     cambridgeCode: '6Pf.01 & 6Pf.02',
     myPalsRef: 'My Pals 6A Theme: Energy (Unit 2 & 3, pp. 42–71)',
-    title: 'Principle of Conservation of Energy & "Lost" Energy',
+    title: 'P6: Principle of Conservation of Energy & "Lost" Energy',
     p6Rule: 'Energy CANNOT be created or destroyed. It can only be converted from one form to another.',
     formulaOrKeyword: 'Total Energy = GPE + KE + Heat + Sound',
     commonMistake: 'Writing "energy was lost" or "energy was destroyed" when a roller coaster or bouncing ball slows down.',
@@ -31,9 +88,10 @@ const NOTES_DATA: NoteItem[] = [
   {
     id: 'n_forces_1',
     topic: 'Forces',
+    gradeLevel: 'Primary 6',
     cambridgeCode: '6Pf.03 & 6Pf.04',
     myPalsRef: 'My Pals 6A Theme: Interactions (Unit 1, pp. 2–39)',
-    title: 'Balanced vs Unbalanced Forces & Friction',
+    title: 'P6: Balanced vs Unbalanced Forces & Friction',
     p6Rule: 'When forces are balanced, an object remains stationary or moves at constant speed. When forces are unbalanced, it accelerates.',
     formulaOrKeyword: 'Frictional Force opposes the direction of motion.',
     commonMistake: 'Thinking heavier objects fall faster in a vacuum; air resistance (frictional force) is what slows down falling objects in air.',
@@ -43,9 +101,10 @@ const NOTES_DATA: NoteItem[] = [
   {
     id: 'n_plant_1',
     topic: 'Plant Transport',
+    gradeLevel: 'Primary 6',
     cambridgeCode: '6Bp.01 & 6Bp.02',
     myPalsRef: 'My Pals 6B Theme: Systems (Unit 1, pp. 1–28)',
-    title: 'Xylem vs Phloem Transport Comparison',
+    title: 'P6: Xylem vs Phloem Transport & Bark Ringing',
     p6Rule: 'Xylem transports water & minerals UPWARDS from roots. Phloem transports food (sugars) BOTH WAYS from leaves.',
     formulaOrKeyword: 'Xylem = Inner vessel (Water). Phloem = Outer vessel (Food).',
     commonMistake: 'Confusing the position of xylem and phloem in stem ring experiments.',
@@ -55,9 +114,10 @@ const NOTES_DATA: NoteItem[] = [
   {
     id: 'n_circuits_1',
     topic: 'Circuits',
+    gradeLevel: 'Primary 6',
     cambridgeCode: '6Pe.01 & 6Pe.02',
     myPalsRef: 'My Pals 5A & 6B Theme: Systems (Unit 3, pp. 122–165)',
-    title: 'Series vs Parallel Circuit Resilience & Brightness',
+    title: 'P6: Series vs Parallel Circuit Resilience & Brightness',
     p6Rule: 'In parallel, each branch is an independent closed circuit. In series, all components share a single loop.',
     formulaOrKeyword: 'Parallel: Bulbs shine brightly and independently. Series: Shared voltage, dimmer bulbs.',
     commonMistake: 'Thinking parallel bulbs drain batteries slower; in parallel, more current is drawn so batteries deplete faster!',
@@ -67,9 +127,10 @@ const NOTES_DATA: NoteItem[] = [
   {
     id: 'n_eco_1',
     topic: 'Ecosystems',
+    gradeLevel: 'Primary 6',
     cambridgeCode: '6Be.01 & 6Be.02',
     myPalsRef: 'My Pals 6A Theme: Interactions (Unit 2, pp. 74–120)',
-    title: 'Energy Flow & The 10% Trophic Rule',
+    title: 'P6: Energy Flow & The 10% Trophic Rule',
     p6Rule: 'Energy flows in ONE direction and is not recycled. Only ~10% of energy is transferred to the next consumer.',
     formulaOrKeyword: 'Sunlight → Producers → Primary Consumers → Predators',
     commonMistake: 'Saying energy is recycled by decomposers. Decomposers recycle minerals and nutrients, NOT energy!',
@@ -79,9 +140,10 @@ const NOTES_DATA: NoteItem[] = [
   {
     id: 'n_human_1',
     topic: 'Human Systems',
+    gradeLevel: 'Primary 6',
     cambridgeCode: '6Bs.01 & 6Bs.02',
     myPalsRef: 'My Pals 6B Theme: Systems (Unit 2, pp. 32–64)',
-    title: 'Circulatory & Respiratory Gaseous Exchange',
+    title: 'P6: Circulatory & Respiratory Gaseous Exchange',
     p6Rule: 'Lungs exchange O2 and CO2 across alveoli. The heart pumps oxygen-rich blood to the body and oxygen-poor blood to lungs.',
     formulaOrKeyword: 'Inhaled: 21% O2, 0.04% CO2 | Exhaled: 16% O2, 4% CO2',
     commonMistake: 'Saying exhaled air has no oxygen. Exhaled air still has ~16% oxygen!',
@@ -92,45 +154,74 @@ const NOTES_DATA: NoteItem[] = [
 
 export const ScienceNotes: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'concepts' | 'cambridge_symbols' | 'mypals_themes'>('concepts');
+  const [gradeFilter, setGradeFilter] = useState<'all' | 'Primary 5' | 'Primary 6'>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [expandedId, setExpandedId] = useState<string | null>('n_energy_1');
+  const [expandedId, setExpandedId] = useState<string | null>('n_p5_reproduction_plants');
 
-  const filteredNotes = NOTES_DATA.filter(n =>
-    n.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    n.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    n.p6Rule.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    n.formulaOrKeyword.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    n.cambridgeCode.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredNotes = NOTES_DATA.filter(n => {
+    if (gradeFilter !== 'all' && n.gradeLevel && n.gradeLevel !== gradeFilter) return false;
+    return (
+      n.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      n.topic.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      n.p6Rule.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      n.formulaOrKeyword.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      n.cambridgeCode.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
 
   return (
     <div className="bg-white/95 rounded-3xl border border-emerald-100/80 overflow-hidden shadow-sm backdrop-blur-xs">
       {/* Header with Pastel Accents */}
       <div className="px-6 py-4.5 border-b border-emerald-100/70 flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-emerald-50/80 via-teal-50/50 to-sky-50/60">
-        <div>
+          <div>
           <div className="flex items-center gap-2.5">
             <span className="p-2 rounded-2xl bg-emerald-200/80 text-emerald-950 shadow-2xs">
               <BookOpen className="w-4 h-4 fill-emerald-700" />
             </span>
             <h2 className="text-lg font-bold text-emerald-950 tracking-tight">
-              P6 Science Revision Cheat Sheets & Exam Answering Techniques
+              Primary 5 & 6 Science Revision Cheat Sheets & Exam Answering Techniques
             </h2>
           </div>
           <p className="text-xs text-slate-500 mt-1">
-            Aligned with Cambridge Stage 6 Checkpoint and My Pals Are Here! Science P6 Exam Syllabi.
+            Aligned with Cambridge Primary Science (Stages 5 & 6) and My Pals Are Here! Science (5A/5B & 6A/6B).
           </p>
         </div>
 
-        {/* Search Input (Pastel Rounded) */}
-        <div className="relative w-full sm:w-64">
-          <Search className="w-4 h-4 text-emerald-600/60 absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Search syllabus keywords..."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-emerald-100 bg-white/90 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400 text-emerald-950 placeholder:text-slate-400"
-          />
+        {/* Right side: Grade level filter & Search Input */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="inline-flex p-1 bg-white/90 rounded-xl border border-emerald-200 shadow-2xs gap-1">
+            {(['all', 'Primary 5', 'Primary 6'] as const).map(lvl => (
+              <button
+                key={lvl}
+                onClick={() => {
+                  soundEffects.playClick();
+                  setGradeFilter(lvl);
+                }}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
+                  gradeFilter === lvl
+                    ? lvl === 'Primary 5'
+                      ? 'bg-emerald-600 text-white font-bold shadow-2xs'
+                      : lvl === 'Primary 6'
+                      ? 'bg-indigo-600 text-white font-bold shadow-2xs'
+                      : 'bg-slate-800 text-white font-bold shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                {lvl === 'all' ? 'All Grades' : lvl}
+              </button>
+            ))}
+          </div>
+
+          <div className="relative w-full sm:w-56">
+            <Search className="w-4 h-4 text-emerald-600/60 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Search syllabus keywords..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-3.5 py-2 rounded-xl border border-emerald-100 bg-white/90 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400 text-emerald-950 placeholder:text-slate-400"
+            />
+          </div>
         </div>
       </div>
 

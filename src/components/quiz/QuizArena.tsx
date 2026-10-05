@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import {
   Award, Zap, HelpCircle, CheckCircle2, XCircle, ChevronRight, RotateCcw,
-  Flame, Sparkles, Filter, BookOpen, ExternalLink
+  Flame, Sparkles, Filter, BookOpen, ExternalLink, Folder
 } from 'lucide-react';
 import { QUIZ_QUESTIONS, TOPICS_META } from '../../data/scienceCurriculum';
 import { QuizQuestion, ScienceTopic } from '../../types/science';
 import { soundEffects } from '../../utils/sound';
+import { GoogleDriveBankModal } from '../drive/GoogleDriveBankModal';
 
 interface Props {
   onCompleteQuiz: (score: number, total: number, earnedXp: number) => void;
@@ -15,7 +16,7 @@ interface Props {
   initialTopic?: ScienceTopic | 'all';
 }
 
-type CurriculumFilterMode = 'all' | 'cambridge' | 'mypals';
+type CurriculumFilterMode = 'all' | 'cambridge' | 'mypals' | 'drive';
 
 export const QuizArena: React.FC<Props> = ({
   onCompleteQuiz,
@@ -25,6 +26,7 @@ export const QuizArena: React.FC<Props> = ({
 }) => {
   const [selectedTopic, setSelectedTopic] = useState<ScienceTopic | 'all'>(initialTopic);
   const [curriculumMode, setCurriculumMode] = useState<CurriculumFilterMode>('all');
+  const [gradeFilter, setGradeFilter] = useState<'all' | 'Primary 5' | 'Primary 6'>('all');
   const [currentIdx, setCurrentIdx] = useState<number>(0);
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [hasAnswered, setHasAnswered] = useState<boolean>(false);
@@ -33,19 +35,32 @@ export const QuizArena: React.FC<Props> = ({
   const [eliminatedOptions, setEliminatedOptions] = useState<number[]>([]);
   const [showHint, setShowHint] = useState<boolean>(false);
   const [isQuizComplete, setIsQuizComplete] = useState<boolean>(false);
+  const [isDriveModalOpen, setIsDriveModalOpen] = useState<boolean>(false);
+  const [driveBankQuestions, setDriveBankQuestions] = useState<QuizQuestion[]>(() => {
+    const saved = localStorage.getItem('sciquest_imported_drive_bank');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [lifelinesUsed, setLifelinesUsed] = useState<{ fiftyFifty: boolean; hint: boolean }>({
     fiftyFifty: false,
     hint: false
   });
 
-  // Filter questions based on topic and curriculum filter
-  const questionsList: QuizQuestion[] = QUIZ_QUESTIONS.filter(q => {
+  // Filter questions based on topic, grade level, and curriculum filter
+  const allAvailableQuestions = [...QUIZ_QUESTIONS, ...driveBankQuestions];
+  const questionsList: QuizQuestion[] = allAvailableQuestions.filter(q => {
+    if (gradeFilter !== 'all') {
+      const qGrade = q.gradeLevel || (q.curriculumAlignment?.cambridgeStage === 'Stage 5' ? 'Primary 5' : 'Primary 6');
+      if (qGrade !== gradeFilter) return false;
+    }
     if (selectedTopic !== 'all' && q.topic !== selectedTopic) return false;
     if (curriculumMode === 'cambridge') {
       return !!q.curriculumAlignment?.cambridgeObjectiveCode;
     }
     if (curriculumMode === 'mypals') {
       return !!q.curriculumAlignment?.myPalsUnit;
+    }
+    if (curriculumMode === 'drive') {
+      return q.id.startsWith('drive_') || driveBankQuestions.some(db => db.id === q.id);
     }
     return true;
   });
@@ -162,6 +177,17 @@ export const QuizArena: React.FC<Props> = ({
             <span className="font-mono text-rose-700 tabular-nums">{score} / {questionsList.length}</span>
           </div>
 
+          <button
+            onClick={() => {
+              soundEffects.playClick();
+              setIsDriveModalOpen(true);
+            }}
+            className="flex items-center gap-1.5 text-[11px] font-bold text-blue-700 hover:text-blue-900 bg-blue-50/90 hover:bg-blue-100 px-3 py-1.5 rounded-xl border border-blue-200 shadow-2xs transition-colors"
+          >
+            <Folder className="w-3.5 h-3.5 text-blue-600" />
+            <span>Drive Bank ({driveBankQuestions.length})</span>
+          </button>
+
           {onOpenSyllabusMap && (
             <button
               onClick={() => {
@@ -228,6 +254,49 @@ export const QuizArena: React.FC<Props> = ({
                 <BookOpen className="w-3 h-3 text-amber-600" />
                 <span>My Pals Science P6</span>
               </button>
+              <button
+                onClick={() => {
+                  soundEffects.playClick();
+                  setCurriculumMode('drive');
+                  setCurrentIdx(0);
+                }}
+                className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 ${
+                  curriculumMode === 'drive'
+                    ? 'bg-blue-100 text-blue-950 font-bold'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                <Folder className="w-3 h-3 text-blue-600" />
+                <span>Drive Bank ({driveBankQuestions.length})</span>
+              </button>
+            </div>
+
+            {/* Grade Level Filter */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-slate-400 font-semibold text-[11px]">Grade:</span>
+              <div className="inline-flex p-1 bg-white rounded-xl border border-slate-200/80 shadow-2xs gap-1">
+                {(['all', 'Primary 5', 'Primary 6'] as const).map(lvl => (
+                  <button
+                    key={lvl}
+                    onClick={() => {
+                      soundEffects.playClick();
+                      setGradeFilter(lvl);
+                      setCurrentIdx(0);
+                    }}
+                    className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+                      gradeFilter === lvl
+                        ? lvl === 'Primary 5'
+                          ? 'bg-emerald-100 text-emerald-950 font-bold'
+                          : lvl === 'Primary 6'
+                          ? 'bg-indigo-100 text-indigo-950 font-bold'
+                          : 'bg-slate-200 text-slate-900 font-bold'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    {lvl === 'all' ? 'All Grades' : lvl}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -518,6 +587,15 @@ export const QuizArena: React.FC<Props> = ({
           </div>
         </div>
       )}
+
+      {/* Google Drive Bank Importer Modal */}
+      <GoogleDriveBankModal
+        isOpen={isDriveModalOpen}
+        onClose={() => setIsDriveModalOpen(false)}
+        onQuestionsImported={(newQuestions) => {
+          setDriveBankQuestions(prev => [...prev, ...newQuestions]);
+        }}
+      />
     </div>
   );
 };

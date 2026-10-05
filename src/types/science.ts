@@ -8,8 +8,8 @@ export type ScienceTopic =
   | 'earth_space';
 
 export interface CurriculumAlignment {
-  cambridgeObjectiveCode: string; // e.g. "6Pf.01 / 6Pf.02"
-  cambridgeStage: 'Stage 6';
+  cambridgeObjectiveCode: string; // e.g. "5Bp.01" or "6Pf.01"
+  cambridgeStage: 'Stage 5' | 'Stage 6';
   cambridgeStrand: 'Physics' | 'Biology' | 'Chemistry' | 'Earth and Space' | 'Thinking and Working Scientifically';
   cambridgeDescription: string;
   cambridgeTws: string; // e.g. "6TWSm.01: Use virtual models to test scientific predictions"
@@ -25,6 +25,7 @@ export interface QuizQuestion {
   id: string;
   topic: ScienceTopic;
   topicTitle: string;
+  gradeLevel?: 'Primary 5' | 'Primary 6';
   question: string;
   scenario?: string;
   diagramSvg?: string;

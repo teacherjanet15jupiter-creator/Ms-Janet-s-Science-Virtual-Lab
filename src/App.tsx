@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Volume2, VolumeX, Award, Zap, Leaf, Move, Trees, Cpu, Play,
-  Search, BookOpen, Bot, Sparkles, Flame, Moon, Scan, Camera
+  Search, BookOpen, Bot, Sparkles, Flame, Moon, Scan, Camera, Folder
 } from 'lucide-react';
 import { BinaBangsaLogo } from './components/common/BinaBangsaLogo';
 import { LabHeroBanner } from './components/common/LabHeroBanner';
@@ -19,6 +19,7 @@ import { ScienceMystery } from './components/mystery/ScienceMystery';
 import { ScienceNotes } from './components/notes/ScienceNotes';
 import { AiScienceMentor } from './components/mentor/AiScienceMentor';
 import { BadgesModal } from './components/profile/BadgesModal';
+import { GoogleDriveBankModal } from './components/drive/GoogleDriveBankModal';
 import { INITIAL_USER_PROGRESS } from './data/scienceCurriculum';
 import { UserProgress, ScienceTopic } from './types/science';
 import { soundEffects } from './utils/sound';
@@ -31,6 +32,7 @@ export default function App() {
   const [activeLab, setActiveLab] = useState<LabId>('energy');
   const [isMuted, setIsMuted] = useState<boolean>(soundEffects.getIsMuted());
   const [isBadgesModalOpen, setIsBadgesModalOpen] = useState<boolean>(false);
+  const [isDriveModalOpen, setIsDriveModalOpen] = useState<boolean>(false);
   const [progress, setProgress] = useState<UserProgress>(() => {
     const saved = localStorage.getItem('sciquest_user_progress');
     if (saved) {
@@ -210,6 +212,18 @@ export default function App() {
           {/* Zone 3: 1-2 primary actions */}
           <div className="flex items-center gap-2 sm:gap-3">
             <button
+              onClick={() => {
+                soundEffects.playClick();
+                setIsDriveModalOpen(true);
+              }}
+              title="Google Drive Science Question Bank"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-50/90 hover:bg-blue-100 border border-blue-200 text-blue-900 text-xs font-bold transition-all shadow-2xs whitespace-nowrap active:scale-95"
+            >
+              <Folder className="w-3.5 h-3.5 text-blue-600" />
+              <span className="hidden sm:inline">Drive Bank</span>
+            </button>
+
+            <button
               onClick={handleToggleSound}
               title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
               className="p-2 rounded-xl text-slate-500 hover:text-indigo-900 hover:bg-indigo-50/80 transition-colors"
@@ -316,9 +330,9 @@ export default function App() {
                     }}
                     className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-xs font-bold transition-all whitespace-nowrap border ${
                       isSelected
-                        ? `${item.pastelBg} shadow-sm ring-2 ring-white`
-                        : 'bg-white/80 hover:bg-white text-slate-700 border-slate-200/80'
-                    }`}
+                        ? `${item.pastelBg} shadow-sm ring-2 ring-white scale-[1.02]`
+                        : 'bg-white/80 hover:bg-white text-slate-700 border-slate-200/80 hover:border-slate-300'
+                    } active:scale-95`}
                   >
                     <IconComponent className={`w-4 h-4 ${isSelected ? item.iconColor : 'text-slate-400'}`} />
                     <span>{item.label}</span>
@@ -333,47 +347,49 @@ export default function App() {
               onOpenSyllabusMap={() => setActiveView('curriculum')}
             />
 
-            {/* Active Lab Component */}
-            {activeLab === 'energy' && (
-              <EnergyCoasterLab
-                onRecordExperiment={handleRecordExperiment}
-                onUnlockBadge={handleUnlockBadge}
-              />
-            )}
-            {activeLab === 'moon' && (
-              <EarthMoon3DLab
-                onRecordExperiment={handleRecordExperiment}
-                onUnlockBadge={handleUnlockBadge}
-                onLaunchAr={() => {
-                  soundEffects.playHologramActivate();
-                  setActiveView('ar');
-                }}
-              />
-            )}
-            {activeLab === 'plant' && (
-              <PlantTransportLab
-                onRecordExperiment={handleRecordExperiment}
-                onUnlockBadge={handleUnlockBadge}
-              />
-            )}
-            {activeLab === 'forces' && (
-              <ForcesFrictionLab
-                onRecordExperiment={handleRecordExperiment}
-                onUnlockBadge={handleUnlockBadge}
-              />
-            )}
-            {activeLab === 'ecosystem' && (
-              <EcosystemFoodWebLab
-                onRecordExperiment={handleRecordExperiment}
-                onUnlockBadge={handleUnlockBadge}
-              />
-            )}
-            {activeLab === 'circuit' && (
-              <CircuitBuilderLab
-                onRecordExperiment={handleRecordExperiment}
-                onUnlockBadge={handleUnlockBadge}
-              />
-            )}
+            {/* Active Lab Component with subtle fluid entrance animation */}
+            <div key={activeLab} className="animate-lab-entrance">
+              {activeLab === 'energy' && (
+                <EnergyCoasterLab
+                  onRecordExperiment={handleRecordExperiment}
+                  onUnlockBadge={handleUnlockBadge}
+                />
+              )}
+              {activeLab === 'moon' && (
+                <EarthMoon3DLab
+                  onRecordExperiment={handleRecordExperiment}
+                  onUnlockBadge={handleUnlockBadge}
+                  onLaunchAr={() => {
+                    soundEffects.playHologramActivate();
+                    setActiveView('ar');
+                  }}
+                />
+              )}
+              {activeLab === 'plant' && (
+                <PlantTransportLab
+                  onRecordExperiment={handleRecordExperiment}
+                  onUnlockBadge={handleUnlockBadge}
+                />
+              )}
+              {activeLab === 'forces' && (
+                <ForcesFrictionLab
+                  onRecordExperiment={handleRecordExperiment}
+                  onUnlockBadge={handleUnlockBadge}
+                />
+              )}
+              {activeLab === 'ecosystem' && (
+                <EcosystemFoodWebLab
+                  onRecordExperiment={handleRecordExperiment}
+                  onUnlockBadge={handleUnlockBadge}
+                />
+              )}
+              {activeLab === 'circuit' && (
+                <CircuitBuilderLab
+                  onRecordExperiment={handleRecordExperiment}
+                  onUnlockBadge={handleUnlockBadge}
+                />
+              )}
+            </div>
           </div>
         )}
 
@@ -427,6 +443,12 @@ export default function App() {
         isOpen={isBadgesModalOpen}
         onClose={() => setIsBadgesModalOpen(false)}
         progress={progress}
+      />
+
+      {/* Google Drive Bank Importer Modal */}
+      <GoogleDriveBankModal
+        isOpen={isDriveModalOpen}
+        onClose={() => setIsDriveModalOpen(false)}
       />
 
       {/* Quiet, tasteful pastel footer */}
